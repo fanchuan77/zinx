@@ -76,7 +76,7 @@ func (c *Connection) Start() error {
 
 //停止连接
 func (c *Connection) Stop() error {
-	fmt.Println("conn Sop()...ConnID:", c.ConnID)
+	fmt.Println("conn Stop()...ConnID:", c.ConnID)
 	if c.isClosed {
 		return nil
 	}
