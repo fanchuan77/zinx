@@ -22,7 +22,7 @@ func main() {
 	buf := make([]byte, 512)
 	for {
 		//向服务端发送数据
-		_, err = conn.Write([]byte("Hello Zinx..."))
+		_, err = conn.Write([]byte("Hello Zinx this is a Connection!"))
 		if err != nil {
 			fmt.Println("client write data err", err)
 			return
