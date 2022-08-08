@@ -6,10 +6,10 @@ import (
 
 type IConnection interface {
 	//启动连接
-	Start()
+	Start() error
 
 	//停止连接
-	Stop()
+	Stop() error
 
 	//获取当前连接的conn对象
 	GetTCPConnection() *net.TCPConn
@@ -21,7 +21,7 @@ type IConnection interface {
 	RemoteAddr() net.Addr
 
 	//发送数据
-	Send()
+	Send() error
 }
 
 //连接绑定的处理业务函数模型

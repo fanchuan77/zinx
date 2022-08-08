@@ -1,6 +1,7 @@
 package znet
 
 import (
+	"errors"
 	"fmt"
 	"net"
 	"zinx/src/zinx/ziface"
@@ -16,6 +17,17 @@ type Server struct {
 	IP string
 	//服务器监听端口Port
 	Port int
+}
+
+//定义当前连接所绑定的业务函数
+func CallBackToClient(conn *net.TCPConn, data []byte, cnt int) error {
+	//回显的业务
+	fmt.Println("[Conn handle] CallBackToClient...")
+	if _, err := conn.Write(data[:cnt]); err != nil {
+		fmt.Println("write back buf err", err)
+		return errors.New("CallBack error")
+	}
+	return nil
 }
 
 //启动服务器
@@ -38,6 +50,7 @@ func (s *Server) Start() {
 		}
 
 		fmt.Println("start Zinx server succ,", s.Name, "succ,Listenning...")
+		var cid uint32 = 0
 
 		//阻塞的等待客户端连接，处理客户端请求
 		for {
@@ -47,29 +60,14 @@ func (s *Server) Start() {
 				fmt.Println("Accept err", err)
 				continue
 			}
-			//已经与客户端建立连接，回显客户端512字节信息
-			go func() {
-				for {
-					buf := make([]byte, 512)
-					cnt, err := conn.Read(buf)
-					if err != nil {
-						fmt.Println("recv buf err", err)
-						continue
-					}
 
-					fmt.Printf("client call:%s \nlen:%d \n", buf, cnt)
+			//得到封装以后的Conn连接对象
+			pakConn := NewConnection(conn, cid, CallBackToClient)
 
-					//回显功能
-					if _, err := conn.Write(buf[:cnt]); err != nil {
-						fmt.Println("write back err", err)
-						continue
-					}
-
-				}
-			}()
-
+			go pakConn.Start()
+			fmt.Println(cid)
+			cid++
 		}
-
 	}()
 }
 
@@ -82,9 +80,6 @@ func (s *Server) Serve() {
 
 	//阻塞状态
 	select {}
-
-	//结束Serve服务
-	//s.Stop()
 }
 
 //关闭服务器
