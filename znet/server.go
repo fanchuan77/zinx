@@ -51,6 +51,7 @@ func (s *Server) Start() {
 				continue
 			}
 
+			//将server注册的router封装到新的连接对象
 			//得到封装以后的Conn连接对象
 			pakConn := NewConnection(conn, cid, s.Router)
 			cid++

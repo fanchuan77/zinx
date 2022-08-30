@@ -59,7 +59,7 @@ func (c *Connection) startReader() error {
 			conn: c,
 			data: buf,
 		}
-		//执行注册的Router方法
+		//执行当前连接绑定的Router方法
 		go func(request ziface.IRequest) {
 			c.Router.PreHandle(request)
 			c.Router.Handle(request)
