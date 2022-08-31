@@ -23,7 +23,14 @@ type Server struct {
 
 //启动服务器
 func (s *Server) Start() {
-	fmt.Printf("[Start] Server Listenner at IP:%s Port:%d is starting \n", s.IP, s.Port)
+	fmt.Printf("[Zinx] Server Name:%s,Listenner at IP:%s Port:%d is starting \n",
+		s.Name,
+		s.IP,
+		s.Port)
+	fmt.Printf("[Zinx] Server Version:%s MaxConn:%d MaxPackageSize:%d \n",
+		utils.GlobalObject.Version,
+		utils.GlobalObject.MaxConn,
+		utils.GlobalObject.MaxPackageSize)
 
 	go func() {
 		//获取一个TCP的Address
@@ -40,7 +47,7 @@ func (s *Server) Start() {
 			return
 		}
 
-		fmt.Println("start Zinx server succ,", s.Name, "succ,Listenning...")
+		fmt.Println("start", s.Name, "succ,Listenning...")
 		var cid uint32 = 0
 
 		//阻塞的等待客户端连接，处理客户端请求
@@ -52,7 +59,7 @@ func (s *Server) Start() {
 				continue
 			}
 
-			//将server注册的router封装到新的连接对象
+			//将server注册的Router封装到新的连接对象
 			//得到封装以后的Conn连接对象
 			pakConn := NewConnection(conn, cid, s.Router)
 			cid++
@@ -88,7 +95,7 @@ func (s *Server) AddRouter(router ziface.IRouter) {
 /*
 	初始化Server模块
 */
-func NewServer(name string) ziface.IServer {
+func NewServer() ziface.IServer {
 	s := &Server{
 		Name:      utils.GlobalObject.Name,
 		IPVersion: "tcp4",

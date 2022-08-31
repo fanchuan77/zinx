@@ -23,6 +23,3 @@ type IConnection interface {
 	//发送数据
 	Send() error
 }
-
-//连接绑定的处理业务函数模型
-type HandleFunc func(*net.TCPConn, []byte, int) error

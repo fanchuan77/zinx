@@ -19,7 +19,7 @@ func (this *PingRouter) PreHandle(request ziface.IRequest) {
 
 //在处理conn业务的主方法Hook
 func (this *PingRouter) Handle(request ziface.IRequest) {
-	request.GetConnection().GetTCPConnection().Write([]byte("call router handle succ...\n"))
+	request.GetConnection().GetTCPConnection().Write([]byte("ping succ...\n"))
 
 }
 
