@@ -55,6 +55,7 @@ func (c *Connection) startReader() error {
 		}
 		fmt.Printf("Reader read:%s \n", buf)
 
+		//封装一个Request对象
 		req := Request{
 			conn: c,
 			data: buf,
@@ -71,7 +72,7 @@ func (c *Connection) startReader() error {
 
 //启动连接
 func (c *Connection) Start() error {
-	fmt.Println("conn Start()... ConnID:", c.ConnID)
+	fmt.Println("start connection succ.. ConnID:", c.ConnID)
 	//启动连接的读业务函数
 	go c.startReader()
 

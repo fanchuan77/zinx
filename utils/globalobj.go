@@ -2,6 +2,7 @@ package utils
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"zinx/src/zinx/ziface"
 )
@@ -36,6 +37,7 @@ var GlobalObject *GlobalObj
 	从zinx.json加载用户自定义的参数
 */
 func (g *GlobalObj) Reload() {
+	fmt.Println("Reload...")
 	data, err := ioutil.ReadFile("conf/zinx.json")
 	if err != nil {
 		panic(err)
@@ -51,6 +53,7 @@ func (g *GlobalObj) Reload() {
 	初始化GlobalObject对象
 */
 func init() {
+	fmt.Println("init...")
 	GlobalObject = &GlobalObj{
 		Name:           "ZinxServerApp",
 		Version:        "v0.4",
@@ -59,4 +62,7 @@ func init() {
 		MaxConn:        1000,
 		MaxPackageSize: 4096,
 	}
+
+	//从zinx.json加载用户自定义配置
+	GlobalObject.Reload()
 }
