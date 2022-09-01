@@ -63,8 +63,6 @@ func (c *Connection) startReader() error {
 	defer fmt.Println("ConnID =", c.ConnID, "Reader is exit,Remote Addr is", c.RemoteAddr())
 	defer c.Stop()
 
-<<<<<<< HEAD
-=======
 	for {
 		//读取客户端数据到 buf
 		// buf := make([]byte, 512)
@@ -112,8 +110,7 @@ func (c *Connection) startReader() error {
 			//Data放入 message
 			msg.SetMsgData(Data)
 		}
-		
->>>>>>> zinx_v0.5
+
 		//封装一个Request对象
 		req := Request{
 			conn: c,

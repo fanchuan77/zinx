@@ -56,11 +56,7 @@ func init() {
 	fmt.Println("init...")
 	GlobalObject = &GlobalObj{
 		Name:           "ZinxServerApp",
-<<<<<<< HEAD
-		Version:        "v0.4",
-=======
 		Version:        "v0.5",
->>>>>>> zinx_v0.5
 		Host:           "0.0.0.0",
 		TcpPort:        8080,
 		MaxConn:        1000,
