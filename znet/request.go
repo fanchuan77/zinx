@@ -6,7 +6,7 @@ import (
 
 type Request struct {
 	conn ziface.IConnection
-	data []byte
+	msg  ziface.IMessage
 }
 
 //得到当前连接
@@ -14,15 +14,20 @@ func (r *Request) GetConnection() ziface.IConnection {
 	return r.conn
 }
 
-//得到请求数据
-func (r *Request) GetData() []byte {
-	return r.data
+//得到消息数据
+func (r *Request) GetMsgData() []byte {
+	return r.msg.GetMsgData()
 }
 
-func NewRequest(conn ziface.IConnection, data []byte) ziface.IRequest {
+//得到消息
+func (r *Request) GetMsgId() uint32 {
+	return r.msg.GetMsgId()
+}
+
+func NewRequest(conn ziface.IConnection, msg ziface.IMessage) ziface.IRequest {
 	r := &Request{
 		conn: conn,
-		data: data,
+		msg:  msg,
 	}
 	return r
 }

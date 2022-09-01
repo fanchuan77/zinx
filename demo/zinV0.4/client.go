@@ -30,6 +30,10 @@ func main() {
 			fmt.Println("client write data err", err)
 			return
 		}
+<<<<<<< HEAD
+=======
+		time.Sleep(1 * time.Second)
+>>>>>>> zinx_v0.5
 		cnt, err := conn.Read(buf)
 		if err != nil {
 			fmt.Println("client read data err", err)
