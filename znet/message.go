@@ -1,17 +1,17 @@
 package znet
 
 /*
-	将请求的消息封装到Message中
+	将请求的消息封装到 Message中
 */
 type Message struct {
-	Id     uint32 //消息ID
-	MsgLen uint32 //消息长度
+	ID     uint32 //消息ID
+	MsgLen uint32 //消息内容长度
 	Data   []byte //消息内容
 }
 
 //获取消息Id
 func (m *Message) GetMsgId() uint32 {
-	return m.Id
+	return m.ID
 
 }
 
@@ -26,8 +26,8 @@ func (m *Message) GetMsgData() []byte {
 }
 
 //设置消息Id
-func (m *Message) SetMsgId(Id uint32) {
-	m.Id = Id
+func (m *Message) SetMsgId(ID uint32) {
+	m.ID = ID
 }
 
 //设置消息长度
