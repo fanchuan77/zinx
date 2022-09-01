@@ -1,0 +1,7 @@
+{
+    "Name": "[Zinx v0.5] ServerApp",
+    "Host": "0.0.0.0",
+    "TcpPort": 8080,
+    "MaxConn": 3,
+    "MaxPackageSize": 4096
+}

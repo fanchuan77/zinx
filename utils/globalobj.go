@@ -56,7 +56,7 @@ func init() {
 	fmt.Println("init...")
 	GlobalObject = &GlobalObj{
 		Name:           "ZinxServerApp",
-		Version:        "v0.4",
+		Version:        "v0.5",
 		Host:           "0.0.0.0",
 		TcpPort:        8080,
 		MaxConn:        1000,
@@ -64,5 +64,5 @@ func init() {
 	}
 
 	//从zinx.json加载用户自定义配置
-	//GlobalObject.Reload()
+	GlobalObject.Reload()
 }

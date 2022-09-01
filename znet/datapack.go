@@ -20,7 +20,7 @@ func NewDataPack() ziface.IDataPack {
 }
 
 /*
-	获取包的头的长度
+	获取包头的长度
 	DataLen uint32(4字节) + ID uint32(4字节)
 */
 func (dp *Datapack) GetHeadLen() uint32 {
