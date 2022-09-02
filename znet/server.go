@@ -23,7 +23,7 @@ type Server struct {
 
 //启动服务器
 func (s *Server) Start() {
-	fmt.Printf("[Zinx] Server Name:%s,Listenner at IP:%s Port:%d is starting \n",
+	fmt.Printf("[Zinx] Server Name:%s,Listenner at IP:%s:%d is starting \n",
 		s.Name,
 		s.IP,
 		s.Port)
