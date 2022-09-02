@@ -18,7 +18,7 @@ type Connection struct {
 	//告知当前连接已经退出的channel
 	ExitChan chan bool
 	//当前连接处理的Router方法
-	Router ziface.IRouter
+	MsgHandler ziface.IMsgHandle
 }
 
 //获取连接ID
@@ -117,11 +117,7 @@ func (c *Connection) startReader() error {
 			msg:  msg,
 		}
 		//执行当前连接绑定的Router方法
-		go func(request ziface.IRequest) {
-			c.Router.PreHandle(request)
-			c.Router.Handle(request)
-			c.Router.PostHandle(request)
-		}(&req)
+		go c.MsgHandler.DoMsgHandler(&req)
 	}
 }
 
@@ -146,13 +142,13 @@ func (c *Connection) Stop() error {
 	return nil
 }
 
-func NewConnection(conn *net.TCPConn, connID uint32, router ziface.IRouter) ziface.IConnection {
+func NewConnection(conn *net.TCPConn, connID uint32, msgHandler ziface.IMsgHandle) ziface.IConnection {
 	c := &Connection{
-		Conn:     conn,
-		ConnID:   connID,
-		isClosed: false,
-		ExitChan: make(chan bool, 1),
-		Router:   router,
+		Conn:       conn,
+		ConnID:     connID,
+		isClosed:   false,
+		ExitChan:   make(chan bool, 1),
+		MsgHandler: msgHandler,
 	}
 	return c
 }

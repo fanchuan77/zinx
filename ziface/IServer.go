@@ -9,5 +9,5 @@ type IServer interface {
 	//关闭服务器
 	Stop()
 	//路由功能，给当前Server添加一个Router
-	AddRouter(router IRouter)
+	AddRouter(msgId uint32, router IRouter)
 }
