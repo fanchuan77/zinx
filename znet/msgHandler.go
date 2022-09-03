@@ -46,3 +46,42 @@ func (mh *MsgHandle) AddRouter(msgId uint32, router ziface.IRouter) {
 	mh.Apis[msgId] = router
 	fmt.Println("Add api MsgId =", msgId, "succ!")
 }
+
+//启动 Worker工作池
+func (mh *MsgHandle) StartWokerPool() {
+	//根据WorkerPoolSize分别开启Worker,每个 Worker用一个go来承载
+	for i := 0; i < int(mh.WorkerPoolSize); i++ {
+		//当前 Worker对应的channel，第i个 Worker对应第i个channel
+		//每个channel中包含最大任务数量
+		mh.TaskQueue[i] = make(chan ziface.IRequest, utils.GlobalObject.MaxWorkerTaskLen)
+		//启动当前 Worker,阻塞等待消息从channel传入
+		go mh.StartOneWorker(i, mh.TaskQueue[i])
+	}
+}
+
+//启动一个 Worker工作流程,等待消息队列传出消息
+func (mh *MsgHandle) StartOneWorker(wid int, taskQueue chan ziface.IRequest) {
+	fmt.Println("Worker ID:", wid, "is started...")
+
+	//阻塞等待
+	for {
+		select {
+		//从channel中拿到request，执行request绑定的 Router方法
+		case request := <-taskQueue:
+			mh.DoMsgHandler(request)
+		}
+	}
+
+}
+
+//将request消息传入TaskQueue
+func (mh *MsgHandle) SendMsgToTaskQueue(request ziface.IRequest) {
+	//平均分配消息传入消息队列
+	//根据客户端 ConnID分配channel
+	WorkerID := request.GetConnection().GetConnID() % mh.WorkerPoolSize
+	fmt.Println("Add ConnID:", request.GetConnection().GetConnID(),
+		"and request MsgID:", request.GetMsgId(),
+		"to WorkerID:", WorkerID)
+	//传入消息
+	mh.TaskQueue[WorkerID] <- request
+}

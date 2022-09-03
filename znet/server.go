@@ -33,6 +33,7 @@ func (s *Server) Start() {
 		utils.GlobalObject.MaxPackageSize)
 
 	go func() {
+		s.MsgHandler.StartWokerPool()
 		//获取一个TCP的Address
 		addr, err := net.ResolveTCPAddr(s.IPVersion, fmt.Sprintf("%s:%d", s.IP, s.Port))
 		if err != nil {

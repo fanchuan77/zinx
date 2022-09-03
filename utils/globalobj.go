@@ -20,7 +20,7 @@ type GlobalObj struct {
 	TcpPort          int            //当前服务器监听的端口号
 	Name             string         //当前服务器名称
 	WorkerPoolSize   uint32         //当前业务工作池的 worker总量
-	MaxWorkerTaskLen uint32         //Zinx框架允许开辟的 worker最大值
+	MaxWorkerTaskLen uint32         //Zinx框架允许单个消息队列包含任务的最大值
 	/*
 		Zinx
 	*/
@@ -57,7 +57,7 @@ func init() {
 	fmt.Println("init...")
 	GlobalObject = &GlobalObj{
 		Name:             "ZinxServerApp",
-		Version:          "v0.7",
+		Version:          "v0.8",
 		Host:             "0.0.0.0",
 		TcpPort:          8080,
 		MaxConn:          1000,

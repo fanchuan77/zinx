@@ -30,7 +30,7 @@ type Connection struct {
 
 //获取连接ID
 func (c *Connection) GetConnID() uint32 {
-	fmt.Println("conn get connID", c.ConnID, "succ...")
+	//fmt.Println("conn get connID", c.ConnID, "succ...")
 	return c.ConnID
 }
 
@@ -41,7 +41,7 @@ func (c *Connection) GetTCPConnection() *net.TCPConn {
 
 //获取客户端连接地址及端口
 func (c *Connection) RemoteAddr() net.Addr {
-	fmt.Println("conn get RemoteAddr", c.Conn.RemoteAddr(), "succ...")
+	//fmt.Println("conn get RemoteAddr", c.Conn.RemoteAddr(), "succ...")
 	return c.Conn.RemoteAddr()
 }
 
@@ -111,8 +111,8 @@ func (c *Connection) startReader() error {
 			conn: c,
 			msg:  msg,
 		}
-		//执行当前连接绑定的Router方法
-		go c.MsgHandler.DoMsgHandler(&req)
+		//将request传入消息队列
+		go c.MsgHandler.SendMsgToTaskQueue(&req)
 	}
 }
 
