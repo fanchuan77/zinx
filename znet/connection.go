@@ -132,6 +132,7 @@ func (c *Connection) startWriter() {
 			}
 		case <-c.ExitChan:
 			//代表 Reader已经退出,此时 Writer也要退出
+			return
 		}
 	}
 
