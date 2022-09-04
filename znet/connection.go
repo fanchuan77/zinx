@@ -151,6 +151,9 @@ func (c *Connection) Start() error {
 	//启动连接的写业务函数
 	go c.startWriter()
 
+	//调用Hook函数
+	c.TcpServer.CallOnConnStart(c)
+
 	return nil
 }
 
@@ -170,6 +173,9 @@ func (c *Connection) Stop() error {
 	c.isClosed = true
 
 	time.Sleep(1 * time.Second)
+
+	//调用Hook函数
+	c.TcpServer.CallOnConnStop(c)
 
 	//回收资源
 	close(c.MsgChan)

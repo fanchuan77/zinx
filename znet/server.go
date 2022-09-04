@@ -21,6 +21,10 @@ type Server struct {
 	MsgHandler ziface.IMsgHandle
 	//连接管理器
 	ConnMgr ziface.IConnManager
+	//Server创建连接之后调用Hook函数
+	OnConnStart func(conn ziface.IConnection)
+	//Server销毁连接之前调用Hook函数
+	OnConnStop func(conn ziface.IConnection)
 }
 
 //启动服务器
@@ -65,6 +69,19 @@ func (s *Server) Start() {
 
 			if s.ConnMgr.Len() >= uint32(utils.GlobalObject.MaxConn) {
 				//TODO: 给客户端响应一个超出最大连接的错误包
+				dp := NewDataPack()
+				//将数据封装到消息包中并返回二进制数据
+				binaryMsg, err := dp.Pack(NewMsgPackage(404, []byte("Too many connections!")))
+				if err != nil {
+					fmt.Println("Pack err", err)
+					return
+				}
+
+				//向客户端发送二进制数据
+				if _, err := conn.Write(binaryMsg); err != nil {
+					fmt.Println("server send data err", err)
+					return
+				}
 				conn.Close()
 				continue
 			}
@@ -108,6 +125,32 @@ func (s *Server) AddRouter(msgId uint32, router ziface.IRouter) {
 
 func (s *Server) GetConnMgr() ziface.IConnManager {
 	return s.ConnMgr
+}
+
+//注册OnConnStart 钩子函数的方法
+func (s *Server) SetOnConnStart(hookFunc func(connection ziface.IConnection)) {
+	s.OnConnStart = hookFunc
+}
+
+//注册OnConnStop 钩子函数的方法
+func (s *Server) SetOnConnStop(hookFunc func(connection ziface.IConnection)) {
+	s.OnConnStop = hookFunc
+}
+
+//调用OnConnStart 钩子函数的方法
+func (s *Server) CallOnConnStart(conn ziface.IConnection) {
+	if s.OnConnStart != nil {
+		fmt.Println("————> Call OnConnStart()...")
+		s.OnConnStart(conn)
+	}
+}
+
+//调用OnConnStop 钩子函数的方法
+func (s *Server) CallOnConnStop(conn ziface.IConnection) {
+	if s.OnConnStop != nil {
+		fmt.Println("————> Call OnConnStop()...")
+		s.OnConnStop(conn)
+	}
 }
 
 /*
