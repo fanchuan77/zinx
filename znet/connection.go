@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"io"
 	"net"
-	"time"
+	"sync"
 	"zinx/src/zinx/ziface"
 )
 
@@ -30,6 +30,12 @@ type Connection struct {
 
 	//当前连接处理的Router方法
 	MsgHandler ziface.IMsgHandle
+
+	//连接属性
+	property map[string]interface{}
+
+	//连接书的的保护锁
+	propertyLock sync.RWMutex
 }
 
 //获取连接ID
@@ -172,8 +178,6 @@ func (c *Connection) Stop() error {
 	c.ExitChan <- true
 	c.isClosed = true
 
-	time.Sleep(1 * time.Second)
-
 	//调用Hook函数
 	c.TcpServer.CallOnConnStop(c)
 
@@ -185,6 +189,32 @@ func (c *Connection) Stop() error {
 	c.TcpServer.GetConnMgr().Remove(c)
 
 	return nil
+}
+
+//设置连接属性
+func (c *Connection) SetProperty(key string, value interface{}) {
+	c.propertyLock.Lock()
+	defer c.propertyLock.Unlock()
+
+	c.property[key] = value
+}
+
+//获取连接属性
+func (c *Connection) GetProperty(key string) (interface{}, error) {
+	c.propertyLock.RLock()
+	defer c.propertyLock.RUnlock()
+	if value, ok := c.property[key]; ok {
+		return value, nil
+	}
+	return nil, errors.New("Connection Property Not FOUND")
+}
+
+//移除连接属性
+func (c *Connection) RemoveProperty(key string) {
+	c.propertyLock.Lock()
+	defer c.propertyLock.Unlock()
+
+	delete(c.property, key)
 }
 
 func NewConnection(server ziface.IServer, conn *net.TCPConn, connID uint32, msgHandler ziface.IMsgHandle) ziface.IConnection {

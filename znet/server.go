@@ -39,8 +39,6 @@ func (s *Server) Start() {
 		utils.GlobalObject.MaxPackageSize)
 
 	go func() {
-		//启动工作池
-		s.MsgHandler.StartWokerPool()
 		//获取一个TCP的Address
 		addr, err := net.ResolveTCPAddr(s.IPVersion, fmt.Sprintf("%s:%d", s.IP, s.Port))
 		if err != nil {
@@ -165,5 +163,8 @@ func NewServer() ziface.IServer {
 		MsgHandler: NewMsgHandle(),
 		ConnMgr:    NewConnManager(),
 	}
+	//启动工作池
+	s.MsgHandler.StartWokerPool()
+
 	return s
 }
