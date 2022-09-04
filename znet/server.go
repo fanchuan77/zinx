@@ -17,8 +17,10 @@ type Server struct {
 	IP string
 	//服务器监听端口Port
 	Port int
-	//消息管理模块
+	//消息管理器
 	MsgHandler ziface.IMsgHandle
+	//连接管理器
+	ConnMgr ziface.IConnManager
 }
 
 //启动服务器
@@ -61,10 +63,17 @@ func (s *Server) Start() {
 				continue
 			}
 
+			if s.ConnMgr.Len() >= uint32(utils.GlobalObject.MaxConn) {
+				//TODO: 给客户端响应一个超出最大连接的错误包
+				conn.Close()
+				continue
+			}
+
 			//将server注册的Router封装到新的连接对象
 			//得到封装以后的Conn连接对象
-			pakConn := NewConnection(conn, cid, s.MsgHandler)
+			pakConn := NewConnection(s, conn, cid, s.MsgHandler)
 			cid++
+
 			//启动当前连接的业务处理
 			go pakConn.Start()
 		}
@@ -85,13 +94,20 @@ func (s *Server) Serve() {
 //关闭服务器
 func (s *Server) Stop() {
 	//TODO:将一些连接的资源或信息回收
+	fmt.Println("[STOP] zinx server name:", s.Name)
 
+	//清空连接管理器
+	s.ConnMgr.Clear()
 }
 
 //路由功能，给当前Server添加一个Router
 func (s *Server) AddRouter(msgId uint32, router ziface.IRouter) {
 	s.MsgHandler.AddRouter(msgId, router)
 	fmt.Println("Add Router succ!!")
+}
+
+func (s *Server) GetConnMgr() ziface.IConnManager {
+	return s.ConnMgr
 }
 
 /*
@@ -104,6 +120,7 @@ func NewServer() ziface.IServer {
 		IP:         utils.GlobalObject.Host,
 		Port:       utils.GlobalObject.TcpPort,
 		MsgHandler: NewMsgHandle(),
+		ConnMgr:    NewConnManager(),
 	}
 	return s
 }

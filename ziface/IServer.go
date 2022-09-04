@@ -10,4 +10,6 @@ type IServer interface {
 	Stop()
 	//路由功能，给当前Server添加一个Router
 	AddRouter(msgId uint32, router IRouter)
+	//获取Server的连接管理器
+	GetConnMgr() IConnManager
 }

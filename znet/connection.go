@@ -5,10 +5,14 @@ import (
 	"fmt"
 	"io"
 	"net"
+	"time"
 	"zinx/src/zinx/ziface"
 )
 
 type Connection struct {
+	//当前连接所属Server
+	TcpServer ziface.IServer
+
 	//当前连接的conn对象
 	Conn *net.TCPConn
 
@@ -56,7 +60,7 @@ func (c *Connection) SendMsg(msgId uint32, data []byte) error {
 		fmt.Println("Pack error msg id =", msgId)
 		return errors.New("Pack msg error")
 	}
-	//消息发送给 channel
+	//消息发送给 channel,Writer读取后写入连接
 	c.MsgChan <- binaryMsg
 	return nil
 }
@@ -165,15 +169,21 @@ func (c *Connection) Stop() error {
 	c.ExitChan <- true
 	c.isClosed = true
 
+	time.Sleep(1 * time.Second)
+
 	//回收资源
 	close(c.MsgChan)
 	close(c.ExitChan)
 
+	//将当前Connection从连接管理器移除
+	c.TcpServer.GetConnMgr().Remove(c)
+
 	return nil
 }
 
-func NewConnection(conn *net.TCPConn, connID uint32, msgHandler ziface.IMsgHandle) ziface.IConnection {
+func NewConnection(server ziface.IServer, conn *net.TCPConn, connID uint32, msgHandler ziface.IMsgHandle) ziface.IConnection {
 	c := &Connection{
+		TcpServer:  server,
 		Conn:       conn,
 		ConnID:     connID,
 		isClosed:   false,
@@ -181,5 +191,9 @@ func NewConnection(conn *net.TCPConn, connID uint32, msgHandler ziface.IMsgHandl
 		MsgChan:    make(chan []byte),
 		MsgHandler: msgHandler,
 	}
+
+	//将Connection加入连接管理器
+	c.TcpServer.GetConnMgr().Add(c)
+
 	return c
 }
