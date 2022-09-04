@@ -135,7 +135,6 @@ func (c *Connection) startWriter() {
 			return
 		}
 	}
-
 }
 
 //启动连接
