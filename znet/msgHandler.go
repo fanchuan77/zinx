@@ -27,6 +27,7 @@ func NewMsgHandle() *MsgHandle {
 
 //调度/执行对应的Router消息处理方法
 func (mh *MsgHandle) DoMsgHandler(request ziface.IRequest) {
+	//handler继承自BaseRouter
 	handler, ok := mh.Apis[request.GetMsgId()]
 	if !ok {
 		fmt.Println("api MsgId =", request.GetMsgId(), "is NOT FOUND! Need Register!")
