@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"encoding/binary"
 	"errors"
-	"zinx/src/zinx/utils"
-	"zinx/src/zinx/ziface"
+	"lib/zinx/utils"
+	"lib/zinx/ziface"
 )
 
 /*

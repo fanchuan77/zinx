@@ -2,9 +2,9 @@ package znet
 
 import (
 	"fmt"
+	"lib/zinx/utils"
+	"lib/zinx/ziface"
 	"strconv"
-	"zinx/src/zinx/utils"
-	"zinx/src/zinx/ziface"
 )
 
 // MsgHandle 消息管理模块

@@ -4,9 +4,9 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"lib/zinx/ziface"
 	"net"
 	"sync"
-	"zinx/src/zinx/ziface"
 )
 
 type Connection struct {

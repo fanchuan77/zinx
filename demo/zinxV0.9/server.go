@@ -1,12 +1,9 @@
-//go:build ignore
-// +build ignore
-
 package main
 
 import (
 	"fmt"
-	"zinx/src/zinx/ziface"
-	"zinx/src/zinx/znet"
+	"lib/zinx/ziface"
+	"lib/zinx/znet"
 )
 
 type PingRouter struct {

@@ -3,8 +3,8 @@ package znet
 import (
 	"errors"
 	"fmt"
+	"lib/zinx/ziface"
 	"sync"
-	"zinx/src/zinx/ziface"
 )
 
 type ConnManager struct {

@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"zinx/src/zinx/ziface"
+	"lib/zinx/ziface"
 )
 
 /*
