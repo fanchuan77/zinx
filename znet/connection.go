@@ -38,24 +38,24 @@ type Connection struct {
 	propertyLock sync.RWMutex
 }
 
-//获取连接ID
+// GetConnID 获取连接ID
 func (c *Connection) GetConnID() uint32 {
 	//fmt.Println("conn get connID", c.ConnID, "succ...")
 	return c.ConnID
 }
 
-//获取当前连接的conn对象
+// GetTCPConnection 获取当前连接的conn对象
 func (c *Connection) GetTCPConnection() *net.TCPConn {
 	return c.Conn
 }
 
-//获取客户端连接地址及端口
+// RemoteAddr 获取客户端连接地址及端口
 func (c *Connection) RemoteAddr() net.Addr {
 	//fmt.Println("conn get RemoteAddr", c.Conn.RemoteAddr(), "succ...")
 	return c.Conn.RemoteAddr()
 }
 
-//发送数据,将数据先封包,再发送
+// SendMsg 发送数据,将数据先封包,再发送
 func (c *Connection) SendMsg(msgId uint32, data []byte) error {
 	dp := NewDataPack()
 	msgPack := NewMsgPackage(msgId, data)
@@ -147,7 +147,7 @@ func (c *Connection) startWriter() {
 	}
 }
 
-//启动连接
+// Start 启动连接
 func (c *Connection) Start() error {
 	fmt.Println("start connection succ.. ConnID:", c.ConnID)
 
@@ -163,7 +163,7 @@ func (c *Connection) Start() error {
 	return nil
 }
 
-//停止连接
+// Stop 停止连接
 func (c *Connection) Stop() error {
 	fmt.Println("ConnID:", c.ConnID, "Connection exit")
 	if c.isClosed {
@@ -191,7 +191,7 @@ func (c *Connection) Stop() error {
 	return nil
 }
 
-//设置连接属性
+// SetProperty 设置连接属性
 func (c *Connection) SetProperty(key string, value interface{}) {
 	c.propertyLock.Lock()
 	defer c.propertyLock.Unlock()
@@ -199,7 +199,7 @@ func (c *Connection) SetProperty(key string, value interface{}) {
 	c.property[key] = value
 }
 
-//获取连接属性
+// GetProperty 获取连接属性
 func (c *Connection) GetProperty(key string) (interface{}, error) {
 	c.propertyLock.RLock()
 	defer c.propertyLock.RUnlock()
@@ -209,7 +209,7 @@ func (c *Connection) GetProperty(key string) (interface{}, error) {
 	return nil, errors.New("Connection Property Not FOUND")
 }
 
-//移除连接属性
+// RemoveProperty 移除连接属性
 func (c *Connection) RemoveProperty(key string) {
 	c.propertyLock.Lock()
 	defer c.propertyLock.Unlock()

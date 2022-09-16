@@ -112,7 +112,10 @@ func TestDataPack(t *testing.T) {
 	sendData1 = append(sendData1, sendData2...)
 	//发送给服务器
 	fmt.Println("send...")
-	conn.Write(sendData1)
+	_, err = conn.Write(sendData1)
+	if err != nil {
+		fmt.Println("client write err", err)
+	}
 	//客户端阻塞
 	select {}
 }

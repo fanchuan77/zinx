@@ -9,7 +9,7 @@ type Message struct {
 	Data   []byte //消息内容
 }
 
-//创建 Message包对象
+// NewMsgPackage 创建 Message包对象
 func NewMsgPackage(msgId uint32, data []byte) *Message {
 	return &Message{
 		ID:     msgId,
@@ -18,33 +18,33 @@ func NewMsgPackage(msgId uint32, data []byte) *Message {
 	}
 }
 
-//获取消息Id
+// GetMsgId 获取消息Id
 func (m *Message) GetMsgId() uint32 {
 	return m.ID
 
 }
 
-//获取消息长度
+// GetMsgLen 获取消息长度
 func (m *Message) GetMsgLen() uint32 {
 	return m.MsgLen
 }
 
-//获取消息内容
+// GetMsgData 获取消息内容
 func (m *Message) GetMsgData() []byte {
 	return m.Data
 }
 
-//设置消息Id
+// SetMsgId 设置消息Id
 func (m *Message) SetMsgId(ID uint32) {
 	m.ID = ID
 }
 
-//设置消息长度
+// SetMsgLen 设置消息长度
 func (m *Message) SetMsgLen(MsgLen uint32) {
 	m.MsgLen = MsgLen
 }
 
-//设置消息内容
+// SetMsgData 设置消息内容
 func (m *Message) SetMsgData(Data []byte) {
 	m.Data = Data
 }

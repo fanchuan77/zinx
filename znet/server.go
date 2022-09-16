@@ -7,7 +7,7 @@ import (
 	"zinx/src/zinx/ziface"
 )
 
-//IServer 的接口实现，定义一个Server的服务器模块
+// Server IServer 的接口实现，定义一个Server的服务器模块
 type Server struct {
 	//服务器名称
 	Name string
@@ -27,7 +27,7 @@ type Server struct {
 	OnConnStop func(conn ziface.IConnection)
 }
 
-//启动服务器
+// Start 启动服务器
 func (s *Server) Start() {
 	fmt.Printf("[Zinx] Server Name:%s,Listenner at IP:%s:%d is starting \n",
 		s.Name,
@@ -95,7 +95,7 @@ func (s *Server) Start() {
 	}()
 }
 
-//运行服务器
+// Serve 运行服务器
 func (s *Server) Serve() {
 	//启动Serve的服务功能
 	s.Start()
@@ -106,7 +106,7 @@ func (s *Server) Serve() {
 	select {}
 }
 
-//关闭服务器
+// Stop 关闭服务器
 func (s *Server) Stop() {
 	//TODO:将一些连接的资源或信息回收
 	fmt.Println("[STOP] zinx server name:", s.Name)
@@ -115,7 +115,7 @@ func (s *Server) Stop() {
 	s.ConnMgr.Clear()
 }
 
-//路由功能，给当前Server添加一个Router
+// AddRouter 路由功能，给当前Server添加一个Router
 func (s *Server) AddRouter(msgId uint32, router ziface.IRouter) {
 	s.MsgHandler.AddRouter(msgId, router)
 	fmt.Println("Add Router succ!!")
@@ -125,17 +125,17 @@ func (s *Server) GetConnMgr() ziface.IConnManager {
 	return s.ConnMgr
 }
 
-//注册OnConnStart 钩子函数的方法
+// SetOnConnStart 注册OnConnStart 钩子函数的方法
 func (s *Server) SetOnConnStart(hookFunc func(connection ziface.IConnection)) {
 	s.OnConnStart = hookFunc
 }
 
-//注册OnConnStop 钩子函数的方法
+// SetOnConnStop 注册OnConnStop 钩子函数的方法
 func (s *Server) SetOnConnStop(hookFunc func(connection ziface.IConnection)) {
 	s.OnConnStop = hookFunc
 }
 
-//调用OnConnStart 钩子函数的方法
+// CallOnConnStart 调用OnConnStart 钩子函数的方法
 func (s *Server) CallOnConnStart(conn ziface.IConnection) {
 	if s.OnConnStart != nil {
 		fmt.Println("————> Call OnConnStart()...")
@@ -143,7 +143,7 @@ func (s *Server) CallOnConnStart(conn ziface.IConnection) {
 	}
 }
 
-//调用OnConnStop 钩子函数的方法
+// CallOnConnStop 调用OnConnStop 钩子函数的方法
 func (s *Server) CallOnConnStop(conn ziface.IConnection) {
 	if s.OnConnStop != nil {
 		fmt.Println("————> Call OnConnStop()...")

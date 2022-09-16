@@ -7,7 +7,7 @@ import (
 	"zinx/src/zinx/ziface"
 )
 
-//消息管理模块
+// MsgHandle 消息管理模块
 type MsgHandle struct {
 	//存放所有 MsgId 与 Router 的对应关系
 	Apis map[uint32]ziface.IRouter
@@ -25,7 +25,7 @@ func NewMsgHandle() *MsgHandle {
 	}
 }
 
-//调度/执行对应的Router消息处理方法
+// DoMsgHandler 调度/执行对应的Router消息处理方法
 func (mh *MsgHandle) DoMsgHandler(request ziface.IRequest) {
 	//handler继承自BaseRouter
 	handler, ok := mh.Apis[request.GetMsgId()]
@@ -37,7 +37,7 @@ func (mh *MsgHandle) DoMsgHandler(request ziface.IRequest) {
 	handler.PostHandle(request)
 }
 
-//为消息添加具体处理逻辑
+// AddRouter 为消息添加具体处理逻辑
 func (mh *MsgHandle) AddRouter(msgId uint32, router ziface.IRouter) {
 	if _, ok := mh.Apis[msgId]; ok {
 		//msgId已注册
@@ -48,7 +48,7 @@ func (mh *MsgHandle) AddRouter(msgId uint32, router ziface.IRouter) {
 	fmt.Println("Add api MsgId =", msgId, "succ!")
 }
 
-//启动 Worker工作池
+// StartWokerPool 启动 Worker工作池
 func (mh *MsgHandle) StartWokerPool() {
 	//根据WorkerPoolSize分别开启Worker,每个 Worker用一个go来承载
 	for i := 0; i < int(mh.WorkerPoolSize); i++ {
@@ -60,7 +60,7 @@ func (mh *MsgHandle) StartWokerPool() {
 	}
 }
 
-//启动一个 Worker工作流程,等待消息队列传出消息
+// StartOneWorker 启动一个 Worker工作流程,等待消息队列传出消息
 func (mh *MsgHandle) StartOneWorker(wid int, taskQueue chan ziface.IRequest) {
 	fmt.Println("Worker ID:", wid, "is started...")
 
@@ -75,7 +75,7 @@ func (mh *MsgHandle) StartOneWorker(wid int, taskQueue chan ziface.IRequest) {
 
 }
 
-//将request消息传入TaskQueue
+// SendMsgToTaskQueue 将request消息传入TaskQueue
 func (mh *MsgHandle) SendMsgToTaskQueue(request ziface.IRequest) {
 	//平均分配消息传入消息队列
 	//根据客户端 ConnID分配channel

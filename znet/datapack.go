@@ -14,7 +14,7 @@ import (
 type Datapack struct {
 }
 
-//初始化一个封包 拆包的实例对象
+// NewDataPack 初始化一个封包 拆包的实例对象
 func NewDataPack() ziface.IDataPack {
 	return &Datapack{}
 }
@@ -27,7 +27,7 @@ func (dp *Datapack) GetHeadLen() uint32 {
 	return 8
 }
 
-//封包方法
+// Pack 封包方法
 func (dp *Datapack) Pack(msg ziface.IMessage) ([]byte, error) {
 	//得到一个存放 Bytes字节的缓冲
 	dataBuff := bytes.NewBuffer([]byte{})
@@ -50,7 +50,7 @@ func (dp *Datapack) Pack(msg ziface.IMessage) ([]byte, error) {
 	return dataBuff.Bytes(), nil
 }
 
-//拆包方法	(读取包里的 Head信息,之后再根据 Head信息里的 Data长度再次读取)
+// Unpack 拆包方法	(读取包里的 Head信息,之后再根据 Head信息里的 Data长度再次读取)
 func (dp *Datapack) Unpack(binaryData []byte) (ziface.IMessage, error) {
 	//创建一个从二进制输入数据中读取的ioReader
 	dataBuff := bytes.NewReader(binaryData)
