@@ -206,7 +206,7 @@ func (c *Connection) GetProperty(key string) (interface{}, error) {
 	if value, ok := c.property[key]; ok {
 		return value, nil
 	}
-	return nil, errors.New("Connection Property Not FOUND")
+	return nil, errors.New("connection Property Not FOUND")
 }
 
 // RemoveProperty 移除连接属性

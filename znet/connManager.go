@@ -20,7 +20,7 @@ func NewConnManager() *ConnManager {
 	}
 }
 
-//增加连接
+// Add 增加连接
 func (cm *ConnManager) Add(conn ziface.IConnection) {
 	//保护共享资源,加写锁
 	cm.connLock.Lock()
@@ -32,7 +32,7 @@ func (cm *ConnManager) Add(conn ziface.IConnection) {
 	fmt.Println("Connection connID =", conn.GetConnID(), "Add succ!! connLen =", cm.Len())
 }
 
-//删除连接
+// Remove 删除连接
 func (cm *ConnManager) Remove(conn ziface.IConnection) {
 	//保护共享资源,加写锁
 	cm.connLock.Lock()
@@ -44,7 +44,7 @@ func (cm *ConnManager) Remove(conn ziface.IConnection) {
 	fmt.Println("Connection connID =", conn.GetConnID(), "Remove succ!! connLen =", cm.Len())
 }
 
-//查询连接
+// GetConnection 查询连接
 func (cm *ConnManager) GetConnection(connID uint32) (ziface.IConnection, error) {
 	//保护共享资源,加读锁
 	cm.connLock.RLock()
@@ -58,12 +58,12 @@ func (cm *ConnManager) GetConnection(connID uint32) (ziface.IConnection, error) 
 	}
 }
 
-//获得连接总数
+// Len 获得连接总数
 func (cm *ConnManager) Len() uint32 {
 	return uint32(len(cm.connections))
 }
 
-//清除所有连接并终止
+// Clear 清除所有连接并终止
 func (cm *ConnManager) Clear() {
 	//保护共享资源,加写锁
 	cm.connLock.Lock()
@@ -71,7 +71,10 @@ func (cm *ConnManager) Clear() {
 
 	for connID, conn := range cm.connections {
 		//停止
-		conn.Stop()
+		err := conn.Stop()
+		if err != nil {
+			return
+		}
 		//删除
 		delete(cm.connections, connID)
 	}

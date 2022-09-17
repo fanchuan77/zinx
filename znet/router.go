@@ -2,7 +2,7 @@ package znet
 
 import "lib/zinx/ziface"
 
-// BaseRouter 实现Router之前先继承BaseRouter，再根据需要对方法进行重写
+// BaseRouter 实现 Router之前先继承BaseRouter，再根据需要对方法进行重写
 type BaseRouter struct {
 }
 
