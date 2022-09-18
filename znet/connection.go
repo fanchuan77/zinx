@@ -72,7 +72,7 @@ func (c *Connection) SendMsg(msgId uint32, data []byte) error {
 }
 
 //读消息的 Goroutine
-func (c *Connection) startReader() error {
+func (c *Connection) startReader() {
 	fmt.Println("[Reader Goroutine is running...]")
 	defer fmt.Println(c.RemoteAddr().String(), "[Reader Goroutine exit!]")
 	defer c.Stop()
@@ -89,14 +89,14 @@ func (c *Connection) startReader() error {
 		_, err := io.ReadFull(c.Conn, headData)
 		if err != nil {
 			fmt.Println("server read Msg Head err", err)
-			return err
+			return
 		}
 
 		//拆包,得到 MsgLen 和 ID
 		msg, err := dp.Unpack(headData)
 		if err != nil {
 			fmt.Println("server unpack Msg Head err", err)
-			return err
+			return
 		}
 
 		//进行第二次读取
@@ -110,7 +110,7 @@ func (c *Connection) startReader() error {
 			_, err := io.ReadFull(c.Conn, Data)
 			if err != nil {
 				fmt.Println("server read Msg Data err", err)
-				return err
+				return
 			}
 
 			//Data放入 message
@@ -165,7 +165,7 @@ func (c *Connection) Start() error {
 
 // Stop 停止连接
 func (c *Connection) Stop() error {
-	fmt.Println("ConnID:", c.ConnID, "Connection exit")
+	fmt.Println("ConnID:", c.ConnID, "Connection exit...")
 	if c.isClosed {
 		return nil
 	}
