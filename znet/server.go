@@ -7,6 +7,19 @@ import (
 	"net"
 )
 
+var zinxLogo = `                                        
+              ██                        
+              ▀▀                        
+ ████████   ████     ██▄████▄  ▀██  ██▀ 
+     ▄█▀      ██     ██▀   ██    ████   
+   ▄█▀        ██     ██    ██    ▄██▄   
+ ▄██▄▄▄▄▄  ▄▄▄██▄▄▄  ██    ██   ▄█▀▀█▄  
+ ▀▀▀▀▀▀▀▀  ▀▀▀▀▀▀▀▀  ▀▀    ▀▀  ▀▀▀  ▀▀▀ 
+                                        `
+var topLine = `***********************************************`
+var borderLine = `│`
+var bottomLine = `***********************************************`
+
 // Server IServer 的接口实现，定义一个Server的服务器模块
 type Server struct {
 	//服务器名称
@@ -155,6 +168,7 @@ func (s *Server) CallOnConnStop(conn ziface.IConnection) {
 	初始化Server模块
 */
 func NewServer() ziface.IServer {
+	PrintLogo()
 	s := &Server{
 		Name:       utils.GlobalObject.Name,
 		IPVersion:  "tcp4",
@@ -167,4 +181,13 @@ func NewServer() ziface.IServer {
 	s.MsgHandler.StartWokerPool()
 
 	return s
+}
+
+// PrintLogo 打印 Logo
+func PrintLogo() {
+
+	fmt.Println(zinxLogo)
+	fmt.Println(topLine)
+	fmt.Println(fmt.Sprintf("%s     [Github] https://github.com/aceld       %s", borderLine, borderLine))
+	fmt.Println(bottomLine)
 }

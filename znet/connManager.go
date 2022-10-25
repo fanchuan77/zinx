@@ -54,7 +54,7 @@ func (cm *ConnManager) GetConnection(connID uint32) (ziface.IConnection, error) 
 		//找到了
 		return conn, nil
 	} else {
-		return nil, errors.New("Connection Not FOUND")
+		return nil, errors.New("connection Not FOUND")
 	}
 }
 
