@@ -93,7 +93,12 @@ func (s *Server) Start() {
 					fmt.Println("server send data err", err)
 					return
 				}
-				conn.Close()
+
+				err = conn.Close()
+				if err != nil {
+					fmt.Println("conn close err", err)
+					return
+				}
 				continue
 			}
 
@@ -103,7 +108,13 @@ func (s *Server) Start() {
 			cid++
 
 			//启动当前连接的业务处理
-			go pakConn.Start()
+			go func() {
+				err := pakConn.Start()
+				if err != nil {
+					fmt.Println("pakConn start err", err)
+					return
+				}
+			}()
 		}
 	}()
 }

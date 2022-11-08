@@ -21,7 +21,7 @@ func NewMsgHandle() *MsgHandle {
 	return &MsgHandle{
 		Apis:           make(map[uint32]ziface.IRouter),
 		WorkerPoolSize: utils.GlobalObject.WorkerPoolSize, //从全局配置中获取
-		TaskQueue:      make([]chan ziface.IRequest, utils.GlobalObject.MaxWorkerTaskLen),
+		TaskQueue:      make([]chan ziface.IRequest, utils.GlobalObject.WorkerPoolSize),
 	}
 }
 
