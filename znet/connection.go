@@ -4,9 +4,9 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"lib/zinx/ziface"
 	"net"
 	"sync"
+	"zinx/ziface"
 )
 
 type Connection struct {
@@ -64,7 +64,7 @@ func (c *Connection) SendMsg(msgId uint32, data []byte) error {
 	binaryMsg, err := dp.Pack(msgPack)
 	if err != nil {
 		fmt.Println("Pack error msg id =", msgId)
-		return errors.New("Pack msg error")
+		return errors.New("pack msg error")
 	}
 	//消息发送给 channel,Writer读取后写入连接
 	c.MsgChan <- binaryMsg
