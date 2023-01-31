@@ -2,15 +2,15 @@ package main
 
 import (
 	"fmt"
-	"lib/zinx/ziface"
-	"lib/zinx/znet"
+	"zinx/ziface"
+	"zinx/znet"
 )
 
 type PingRouter struct {
 	znet.BaseRouter
 }
 
-//Test Handle
+// Test Handle
 func (this *PingRouter) Handle(request ziface.IRequest) {
 	fmt.Println("recv from client: msgId =", request.GetMsgId(),
 		",data =", string(request.GetMsgData()))
@@ -24,7 +24,7 @@ type HelloZinxRouter struct {
 	znet.BaseRouter
 }
 
-//Test Handle
+// Test Handle
 func (this *HelloZinxRouter) Handle(request ziface.IRequest) {
 	fmt.Println("recv from client: msgId =", request.GetMsgId(),
 		",data =", string(request.GetMsgData()))
@@ -34,7 +34,7 @@ func (this *HelloZinxRouter) Handle(request ziface.IRequest) {
 	}
 }
 
-//Test Hook
+// Test Hook
 func Start(conn ziface.IConnection) {
 	fmt.Println("--------------this is start()--------------")
 }

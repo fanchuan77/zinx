@@ -71,7 +71,7 @@ func (c *Connection) SendMsg(msgId uint32, data []byte) error {
 	return nil
 }
 
-//读消息的 Goroutine
+// 读消息的 Goroutine
 func (c *Connection) startReader() {
 	fmt.Println("[Reader Goroutine is running...]")
 	defer fmt.Println(c.RemoteAddr().String(), "[Reader Goroutine exit!]")
@@ -126,7 +126,7 @@ func (c *Connection) startReader() {
 	}
 }
 
-//写消息的 Goroutine,负责发送消息给客户端
+// 写消息的 Goroutine,负责发送消息给客户端
 func (c *Connection) startWriter() {
 	fmt.Println("[Writer Goroutine is running..]")
 	defer fmt.Println(c.RemoteAddr().String(), "[Writer Goroutine exit!]")

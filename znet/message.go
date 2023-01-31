@@ -1,7 +1,7 @@
 package znet
 
 /*
-	将请求的消息封装到 Message中
+将请求的消息封装到 Message中
 */
 type Message struct {
 	ID     uint32 //消息ID

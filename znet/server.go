@@ -176,7 +176,7 @@ func (s *Server) CallOnConnStop(conn ziface.IConnection) {
 }
 
 /*
-	初始化Server模块
+初始化Server模块
 */
 func NewServer() ziface.IServer {
 	PrintLogo()

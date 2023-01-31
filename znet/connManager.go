@@ -41,7 +41,7 @@ func (cm *ConnManager) Remove(conn ziface.IConnection) {
 	//删除连接
 	delete(cm.connections, conn.GetConnID())
 
-	fmt.Println("Connection connID =", conn.GetConnID(), "Remove succ!! connLen =", cm.Len())
+	fmt.Println("Connection connID =", conn.GetConnID(), "remove succ!! connLen =", cm.Len())
 }
 
 // GetConnection 查询连接

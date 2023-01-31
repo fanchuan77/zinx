@@ -4,12 +4,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"lib/zinx/ziface"
+	"zinx/ziface"
 )
 
 /*
-	存储所有Zinx框架需要的全局变量，供其他模块使用
-	部分参数可以通过zinx.json油用户自行配置
+存储所有Zinx框架需要的全局变量，供其他模块使用
+部分参数可以通过zinx.json油用户自行配置
 */
 type GlobalObj struct {
 	/*
@@ -30,16 +30,16 @@ type GlobalObj struct {
 }
 
 /*
-	定义一个全局对外的GlobalObj
+定义一个全局对外的GlobalObj
 */
 var GlobalObject *GlobalObj
 
 /*
-	从zinx.json加载用户自定义的参数
+从zinx.json加载用户自定义的参数
 */
 func (g *GlobalObj) Reload() {
 	fmt.Println("Reload...")
-	data, err := ioutil.ReadFile("conf/zinx.json")
+	data, err := ioutil.ReadFile("D:\\CodeSpace\\Go\\src\\zinx\\demo\\zinxV0.9\\conf\\zinx.json")
 	if err != nil {
 		panic(err)
 	}
@@ -51,7 +51,7 @@ func (g *GlobalObj) Reload() {
 }
 
 /*
-	初始化GlobalObject对象
+初始化GlobalObject对象
 */
 func init() {
 	fmt.Println("init...")

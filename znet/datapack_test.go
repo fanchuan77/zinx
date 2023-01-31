@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-//测试datapack的封包、拆包功能
+// 测试datapack的封包、拆包功能
 func TestDataPack(t *testing.T) {
 	/*
 		模拟服务器

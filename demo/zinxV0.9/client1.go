@@ -3,9 +3,9 @@ package main
 import (
 	"fmt"
 	"io"
-	"lib/zinx/znet"
 	"net"
 	"time"
+	"zinx/znet"
 )
 
 func main() {
